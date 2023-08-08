@@ -15,6 +15,10 @@ resource "google_cloud_run_v2_service" "api" {
       image = "${var.api_image}@${data.docker_registry_image.api.sha256_digest}"
 
       env {
+        name  = "DOCUMENT_AI_US_DRIVER_LICENSE_PARSER_NAME"
+        value = google_document_ai_processor.us_driver_license_parser.name
+      }
+      env {
         name  = "GOOGLE_PROJECT_ID"
         value = data.google_project.project.project_id
       }
