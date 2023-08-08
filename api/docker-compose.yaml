@@ -1,0 +1,12 @@
+version: '3.9'
+services:
+  app:
+    build: .
+    ports:
+      - ${PORT}:${PORT}
+    environment:
+      - GOOGLE_PROJECT_ID=${GOOGLE_PROJECT_ID}
+      - LOG_LEVEL=${LOG_LEVEL}
+      - PORT=${PORT}
+      - K_REVISION=${K_REVISION}
+      - K_SERVICE=${K_SERVICE}

@@ -1,0 +1,44 @@
+{
+  "name": "google-cloud-document-ai-identity-form-auto-filler-api",
+  "version": "0.0.0",
+  "description": "Google Cloud Document AI Identity Form Auto-Filler API",
+  "private": true,
+  "main": "build/src/index.js",
+  "types": "build/src/index.d.ts",
+  "files": [
+    "build/src"
+  ],
+  "license": "SEE LICENSE IN LICENSE",
+  "keywords": [],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "gts lint",
+    "clean": "gts clean",
+    "compile": "tsc",
+    "fix": "gts fix",
+    "dev": "ts-node-dev -r dotenv-expand/config src/index.ts",
+    "start": "docker compose up --build",
+    "prepare": "npm run compile",
+    "pretest": "npm run compile",
+    "posttest": "npm run lint"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.13",
+    "@types/express": "^4.17.17",
+    "@types/node": "^20.4.5",
+    "dotenv": "^16.3.1",
+    "dotenv-expand": "^10.0.0",
+    "gts": "^5.0.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "~5.1.6"
+  },
+  "dependencies": {
+    "@relaycorp/pino-cloud": "^1.0.28",
+    "celebrate": "^15.0.1",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "http-status-codes": "^2.2.0",
+    "pino": "^8.15.0",
+    "pino-http": "^8.4.0"
+  }
+}
