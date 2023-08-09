@@ -12,7 +12,7 @@ class DocumentsRouter {
     const router = Router();
 
     router.post(
-      '/countries/us/ids/driver-license/parse',
+      '/ids/countries/us/driver-license/parse',
       async (req, res, next) => {
         try {
           if (!req.files) {
@@ -48,7 +48,7 @@ class DocumentsRouter {
       }
     );
 
-    router.post('/countries/us/ids/passport/parse', async (req, res, next) => {
+    router.post('/ids/countries/us/passport/parse', async (req, res, next) => {
       try {
         if (!req.files) {
           throw new RangeError('No files were uploaded');
