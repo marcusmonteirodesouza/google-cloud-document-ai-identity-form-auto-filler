@@ -1,1 +1,1 @@
-export {USDocumentsService} from './us';
+export {USIDsService} from './ids/us';

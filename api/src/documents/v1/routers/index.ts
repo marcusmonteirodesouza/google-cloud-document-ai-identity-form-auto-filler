@@ -1,1 +1,1 @@
-export {DocumentsRouter} from './documents-router';
+export {DocumentsRouter} from './documents';

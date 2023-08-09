@@ -1,8 +1,8 @@
 import {Router} from 'express';
-import {USDocumentsService} from '../services';
+import {USIDsService} from '../../services';
 
 interface DocumentsRouterSettings {
-  usDocumentsService: USDocumentsService;
+  usIdsService: USIDsService;
 }
 
 class DocumentsRouter {
@@ -33,13 +33,14 @@ class DocumentsRouter {
             );
           }
 
-          const {usDocumentsService} = this.settings;
+          const {usIdsService} = this.settings;
 
-          const parsedUSDriverLicense =
-            await usDocumentsService.parseUSDriverLicense({
+          const parsedUSDriverLicense = await usIdsService.parseUSDriverLicense(
+            {
               imageData: uploadedFile.data,
               mimeType: uploadedFile.mimetype,
-            });
+            }
+          );
 
           return res.json(parsedUSDriverLicense);
         } catch (err) {
@@ -68,9 +69,9 @@ class DocumentsRouter {
           );
         }
 
-        const {usDocumentsService} = this.settings;
+        const {usIdsService} = this.settings;
 
-        const parsedUSPassport = await usDocumentsService.parseUSPassport({
+        const parsedUSPassport = await usIdsService.parseUSPassport({
           imageData: uploadedFile.data,
           mimeType: uploadedFile.mimetype,
         });

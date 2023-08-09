@@ -8,7 +8,7 @@ import {HealthCheckRouter} from './health-check';
 import {errorHandler} from './error-handler/v1';
 import {
   DocumentsRouter as DocumentsRouterV1,
-  USDocumentsService as USDocumentsServiceV1,
+  USIDsService as USIDsServiceV1,
 } from './documents/v1';
 import {DocumentProcessorServiceClient} from '@google-cloud/documentai';
 import {config} from './config';
@@ -19,7 +19,7 @@ const documentProcessorServiceClient = new DocumentProcessorServiceClient({
 
 const healthCheckRouter = new HealthCheckRouter().router;
 
-const usDocumentsServiceV1 = new USDocumentsServiceV1({
+const usIdsServiceV1 = new USIDsServiceV1({
   documentAi: {
     documentProcessorServiceClient,
     processors: {
@@ -36,7 +36,7 @@ const usDocumentsServiceV1 = new USDocumentsServiceV1({
 });
 
 const documentsRouterV1 = new DocumentsRouterV1({
-  usDocumentsService: usDocumentsServiceV1,
+  usIdsService: usIdsServiceV1,
 }).router;
 
 const app = express();

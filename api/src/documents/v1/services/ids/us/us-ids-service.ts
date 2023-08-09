@@ -4,9 +4,9 @@ import Jimp from 'jimp';
 import {
   USDriverLicenseParsingResults,
   USPassportParsingResults,
-} from '../../models';
+} from '../../../models';
 
-interface USDocumentsServiceSettings {
+interface USIDsServiceSettings {
   documentAi: {
     documentProcessorServiceClient: DocumentProcessorServiceClient;
     processors: {
@@ -32,8 +32,8 @@ interface ParseUSPassportOptions {
   mimeType: string;
 }
 
-class USDocumentsService {
-  constructor(private readonly settings: USDocumentsServiceSettings) {}
+class USIDsService {
+  constructor(private readonly settings: USIDsServiceSettings) {}
 
   async parseUSDriverLicense(
     options: ParseUSDriverLicenseOptions
@@ -418,4 +418,4 @@ class USDocumentsService {
   }
 }
 
-export {USDocumentsService};
+export {USIDsService};
