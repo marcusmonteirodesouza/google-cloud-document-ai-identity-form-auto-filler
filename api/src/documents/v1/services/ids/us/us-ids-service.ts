@@ -3,6 +3,7 @@ import {google} from '@google-cloud/documentai/build/protos/protos';
 import Jimp from 'jimp';
 import {
   USDriverLicenseParsingResults,
+  USIDProofingResults,
   USPassportParsingResults,
 } from '../../../models';
 
@@ -11,6 +12,10 @@ interface USIDsServiceSettings {
     documentProcessorServiceClient: DocumentProcessorServiceClient;
     processors: {
       driverLicense: {
+        location: string;
+        id: string;
+      };
+      idProofing: {
         location: string;
         id: string;
       };
@@ -28,6 +33,11 @@ interface ParseUSDriverLicenseOptions {
 }
 
 interface ParseUSPassportOptions {
+  imageData: Buffer;
+  mimeType: string;
+}
+
+interface idProofOptions {
   imageData: Buffer;
   mimeType: string;
 }
@@ -342,6 +352,108 @@ class USIDsService {
         confidence: portraitEntity.confidence,
       };
     }
+
+    return results;
+  }
+
+  async idProof(options: idProofOptions): Promise<USIDProofingResults> {
+    const {documentProcessorServiceClient} = this.settings.documentAi;
+
+    const {location, id: processorId} =
+      this.settings.documentAi.processors.idProofing;
+
+    const projectId = await documentProcessorServiceClient.getProjectId();
+
+    const name = `projects/${projectId}/locations/${location}/processors/${processorId}`;
+
+    const encodedImage = options.imageData.toString('base64');
+
+    const [processDocumentResult] =
+      await this.settings.documentAi.documentProcessorServiceClient.processDocument(
+        {
+          name,
+          rawDocument: {
+            content: encodedImage,
+            mimeType: options.mimeType,
+          },
+        }
+      );
+
+    if (!processDocumentResult.document) {
+      throw new Error('processDocumentResult.document must be defined');
+    }
+
+    if (!processDocumentResult.document.entities) {
+      throw new Error(
+        'processDocumentResult.document.entities must be defined'
+      );
+    }
+
+    const evidenceInconclusiveSuspiciousWord =
+      this.maybeGetEntityMentionTextAndConfidence(
+        processDocumentResult.document.entities.find(
+          entity => entity.type === 'evidence_inconclusive_suspicious_word'
+        )
+      );
+
+    console.log(evidenceInconclusiveSuspiciousWord);
+
+    const evidenceHostname = this.maybeGetEntityMentionTextAndConfidence(
+      processDocumentResult.document.entities.find(
+        entity => entity.type === 'evidence_hostname'
+      )
+    );
+
+    const evidenceSuspiciousWord = this.maybeGetEntityMentionTextAndConfidence(
+      processDocumentResult.document.entities.find(
+        entity => entity.type === 'evidence_suspicious_word'
+      )
+    );
+
+    const evidenceThumbnailUrl = this.maybeGetEntityMentionTextAndConfidence(
+      processDocumentResult.document.entities.find(
+        entity => entity.type === 'evidence_thumbnail_url'
+      )
+    );
+
+    const fraudSignalsIsIdentityDocument =
+      this.maybeGetEntityMentionTextAndConfidence(
+        processDocumentResult.document.entities.find(
+          entity => entity.type === 'fraud_signals_is_identity_document'
+        )
+      );
+
+    const fraudSignalsImageManipulation =
+      this.maybeGetEntityMentionTextAndConfidence(
+        processDocumentResult.document.entities.find(
+          entity => entity.type === 'fraud_signals_image_manipulation'
+        )
+      );
+
+    const fraudSignalsSuspiciousWords =
+      this.maybeGetEntityMentionTextAndConfidence(
+        processDocumentResult.document.entities.find(
+          entity => entity.type === 'fraud_signals_suspicious_words'
+        )
+      );
+
+    const fraudSignalsOnlineDuplicate =
+      this.maybeGetEntityMentionTextAndConfidence(
+        processDocumentResult.document.entities.find(
+          entity => entity.type === 'fraud_signals_online_duplicate'
+        )
+      );
+
+    const results: USIDProofingResults = {
+      evidenceInconclusiveSuspiciousWord,
+      evidenceHostname,
+      evidenceSuspiciousWord,
+      evidenceThumbnailUrl,
+      fraudSignalsIsIdentityDocument,
+      fraudSignalsImageManipulation,
+      fraudSignalsSuspiciousWords,
+      fraudSignalsOnlineDuplicate,
+    };
 
     return results;
   }

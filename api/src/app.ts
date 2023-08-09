@@ -24,12 +24,16 @@ const usIdsServiceV1 = new USIDsServiceV1({
     documentProcessorServiceClient,
     processors: {
       driverLicense: {
-        location: config.documentAi.processors.usDriverLicense.location,
-        id: config.documentAi.processors.usDriverLicense.id,
+        location: config.documentAi.processors.ids.us.driverLicense.location,
+        id: config.documentAi.processors.ids.us.driverLicense.id,
+      },
+      idProofing: {
+        location: config.documentAi.processors.ids.us.idProofing.location,
+        id: config.documentAi.processors.ids.us.idProofing.id,
       },
       passport: {
-        location: config.documentAi.processors.usPassport.location,
-        id: config.documentAi.processors.usPassport.id,
+        location: config.documentAi.processors.ids.us.passport.location,
+        id: config.documentAi.processors.ids.us.passport.id,
       },
     },
   },

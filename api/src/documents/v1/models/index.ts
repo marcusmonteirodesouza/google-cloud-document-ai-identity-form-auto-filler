@@ -1,1 +1,5 @@
-export {USDriverLicenseParsingResults, USPassportParsingResults} from './us';
+export {
+  USDriverLicenseParsingResults,
+  USPassportParsingResults,
+  USIDProofingResults,
+} from './ids/us';
