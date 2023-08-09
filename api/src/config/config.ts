@@ -2,6 +2,8 @@ import {Joi} from 'celebrate';
 
 const envVarsSchema = Joi.object()
   .keys({
+    DOCUMENT_AI_US_DRIVER_LICENSE_PROCESSOR_LOCATION: Joi.string().required(),
+    DOCUMENT_AI_US_DRIVER_LICENSE_PROCESSOR_ID: Joi.string().required(),
     GOOGLE_PROJECT_ID: Joi.string().required(),
     LOG_LEVEL: Joi.string().valid('debug', 'info').default('info'),
     PORT: Joi.number().integer().required(),
@@ -17,6 +19,14 @@ if (error) {
 }
 
 const config = {
+  documentAi: {
+    processors: {
+      usDriverLicense: {
+        location: envVars.DOCUMENT_AI_US_DRIVER_LICENSE_PROCESSOR_LOCATION,
+        id: envVars.DOCUMENT_AI_US_DRIVER_LICENSE_PROCESSOR_ID,
+      },
+    },
+  },
   google: {
     cloudRun: {
       revision: envVars.K_REVISION,

@@ -15,7 +15,11 @@ resource "google_cloud_run_v2_service" "api" {
       image = "${var.api_image}@${data.docker_registry_image.api.sha256_digest}"
 
       env {
-        name  = "DOCUMENT_AI_US_DRIVER_LICENSE_PARSER_NAME"
+        name  = "DOCUMENT_AI_US_DRIVER_LICENSE_PROCESSOR_LOCATION"
+        value = google_document_ai_processor.us_driver_license_parser.location
+      }
+      env {
+        name  = "DOCUMENT_AI_US_DRIVER_LICENSE_PROCESSOR_ID"
         value = google_document_ai_processor.us_driver_license_parser.name
       }
       env {
