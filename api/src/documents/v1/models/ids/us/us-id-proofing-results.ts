@@ -1,36 +1,36 @@
+interface USIDProofingResultsEvidenceSuspiciousWord {
+  value: string;
+}
+
+interface USIDProofingResultsEvidenceInconclusiveSuspiciousWord {
+  value: string;
+}
+
+interface USIDProofingResultsEvidenceThumbnailUrl {
+  value: string;
+}
+
+interface USIDProofingResultsEvidenceHostname {
+  value: string;
+}
+
 interface USIDProofingResults {
-  evidenceInconclusiveSuspiciousWord?: {
+  fraudSignalsIsIdentityDocument: {
     value: string;
-    confidence: number;
-  };
-  evidenceHostname?: {
+  } | null;
+  fraudSignalsSuspiciousWords: {
     value: string;
-    confidence: number;
-  };
-  evidenceSuspiciousWord?: {
+  } | null;
+  evidenceSuspiciousWord: USIDProofingResultsEvidenceSuspiciousWord[];
+  evidenceInconclusiveSuspiciousWord: USIDProofingResultsEvidenceInconclusiveSuspiciousWord[];
+  fraudSignalsImageManipulation: {
     value: string;
-    confidence: number;
-  };
-  evidenceThumbnailUrl?: {
+  } | null;
+  fraudSignalsOnlineDuplicate: {
     value: string;
-    confidence: number;
-  };
-  fraudSignalsIsIdentityDocument?: {
-    value: string;
-    confidence: number;
-  };
-  fraudSignalsImageManipulation?: {
-    value: string;
-    confidence: number;
-  };
-  fraudSignalsSuspiciousWords?: {
-    value: string;
-    confidence: number;
-  };
-  fraudSignalsOnlineDuplicate?: {
-    value: string;
-    confidence: number;
-  };
+  } | null;
+  evidenceThumbnailUrl: USIDProofingResultsEvidenceThumbnailUrl[];
+  evidenceHostname: USIDProofingResultsEvidenceHostname[];
 }
 
 export {USIDProofingResults};

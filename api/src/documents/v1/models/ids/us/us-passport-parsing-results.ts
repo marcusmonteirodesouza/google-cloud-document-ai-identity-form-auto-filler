@@ -1,44 +1,44 @@
 import {google} from '@google-cloud/documentai/build/protos/protos';
 
 interface USPassportParsingResults {
-  address?: {
+  address: {
     value: string;
     confidence: number;
-  };
-  dateOfBirth?: {
+  } | null;
+  dateOfBirth: {
     value: string;
     confidence: number;
-  };
-  documentId?: {
+  } | null;
+  documentId: {
     value: string;
     confidence: number;
-  };
-  expirationDate?: {
+  } | null;
+  expirationDate: {
     value: string;
     confidence: number;
-  };
-  familyName?: {
+  } | null;
+  familyName: {
     value: string;
     confidence: number;
-  };
-  givenNames?: {
+  } | null;
+  givenNames: {
     value: string;
     confidence: number;
-  };
-  issueDate?: {
+  } | null;
+  issueDate: {
     value: string;
     confidence: number;
-  };
-  mrzCode?: {
+  } | null;
+  mrzCode: {
     value: string;
     confidence: number;
-  };
-  portrait?: {
+  } | null;
+  portrait: {
     page: number;
     normalizedVertices: google.cloud.documentai.v1.INormalizedVertex[];
     image: string;
     confidence: number;
-  };
+  } | null;
 }
 
 export {USPassportParsingResults};

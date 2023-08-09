@@ -80,47 +80,54 @@ class USIDsService {
       );
     }
 
-    const address = this.maybeGetEntityMentionTextAndConfidence(
-      processDocumentResult.document.entities.find(
-        entity => entity.type === 'Address'
-      )
-    );
+    const address =
+      this.maybeGetEntityMentionTextAndConfidence(
+        processDocumentResult.document.entities.find(
+          entity => entity.type === 'Address'
+        )
+      ) || null;
 
-    const dateOfBirth = this.maybeGetEntityMentionTextAndConfidence(
-      processDocumentResult.document.entities.find(
-        entity => entity.type === 'Date Of Birth'
-      )
-    );
+    const dateOfBirth =
+      this.maybeGetEntityMentionTextAndConfidence(
+        processDocumentResult.document.entities.find(
+          entity => entity.type === 'Date Of Birth'
+        )
+      ) || null;
 
-    const documentId = this.maybeGetEntityMentionTextAndConfidence(
-      processDocumentResult.document.entities.find(
-        entity => entity.type === 'Document Id'
-      )
-    );
+    const documentId =
+      this.maybeGetEntityMentionTextAndConfidence(
+        processDocumentResult.document.entities.find(
+          entity => entity.type === 'Document Id'
+        )
+      ) || null;
 
-    const expirationDate = this.maybeGetEntityMentionTextAndConfidence(
-      processDocumentResult.document.entities.find(
-        entity => entity.type === 'Expiration Date'
-      )
-    );
+    const expirationDate =
+      this.maybeGetEntityMentionTextAndConfidence(
+        processDocumentResult.document.entities.find(
+          entity => entity.type === 'Expiration Date'
+        )
+      ) || null;
 
-    const familyName = this.maybeGetEntityMentionTextAndConfidence(
-      processDocumentResult.document.entities.find(
-        entity => entity.type === 'Family Name'
-      )
-    );
+    const familyName =
+      this.maybeGetEntityMentionTextAndConfidence(
+        processDocumentResult.document.entities.find(
+          entity => entity.type === 'Family Name'
+        )
+      ) || null;
 
-    const givenNames = this.maybeGetEntityMentionTextAndConfidence(
-      processDocumentResult.document.entities.find(
-        entity => entity.type === 'Given Names'
-      )
-    );
+    const givenNames =
+      this.maybeGetEntityMentionTextAndConfidence(
+        processDocumentResult.document.entities.find(
+          entity => entity.type === 'Given Names'
+        )
+      ) || null;
 
-    const issueDate = this.maybeGetEntityMentionTextAndConfidence(
-      processDocumentResult.document.entities.find(
-        entity => entity.type === 'Issue Date'
-      )
-    );
+    const issueDate =
+      this.maybeGetEntityMentionTextAndConfidence(
+        processDocumentResult.document.entities.find(
+          entity => entity.type === 'Issue Date'
+        )
+      ) || null;
 
     const portraitEntity = processDocumentResult.document.entities.find(
       entity => entity.type === 'Portrait'
@@ -134,6 +141,7 @@ class USIDsService {
       familyName,
       givenNames,
       issueDate,
+      portrait: null,
     };
 
     if (portraitEntity) {
@@ -232,53 +240,61 @@ class USIDsService {
       );
     }
 
-    const address = this.maybeGetEntityMentionTextAndConfidence(
-      processDocumentResult.document.entities.find(
-        entity => entity.type === 'Address'
-      )
-    );
+    const address =
+      this.maybeGetEntityMentionTextAndConfidence(
+        processDocumentResult.document.entities.find(
+          entity => entity.type === 'Address'
+        )
+      ) || null;
 
-    const dateOfBirth = this.maybeGetEntityMentionTextAndConfidence(
-      processDocumentResult.document.entities.find(
-        entity => entity.type === 'Date Of Birth'
-      )
-    );
+    const dateOfBirth =
+      this.maybeGetEntityMentionTextAndConfidence(
+        processDocumentResult.document.entities.find(
+          entity => entity.type === 'Date Of Birth'
+        )
+      ) || null;
 
-    const documentId = this.maybeGetEntityMentionTextAndConfidence(
-      processDocumentResult.document.entities.find(
-        entity => entity.type === 'Document Id'
-      )
-    );
+    const documentId =
+      this.maybeGetEntityMentionTextAndConfidence(
+        processDocumentResult.document.entities.find(
+          entity => entity.type === 'Document Id'
+        )
+      ) || null;
 
-    const expirationDate = this.maybeGetEntityMentionTextAndConfidence(
-      processDocumentResult.document.entities.find(
-        entity => entity.type === 'Expiration Date'
-      )
-    );
+    const expirationDate =
+      this.maybeGetEntityMentionTextAndConfidence(
+        processDocumentResult.document.entities.find(
+          entity => entity.type === 'Expiration Date'
+        )
+      ) || null;
 
-    const familyName = this.maybeGetEntityMentionTextAndConfidence(
-      processDocumentResult.document.entities.find(
-        entity => entity.type === 'Family Name'
-      )
-    );
+    const familyName =
+      this.maybeGetEntityMentionTextAndConfidence(
+        processDocumentResult.document.entities.find(
+          entity => entity.type === 'Family Name'
+        )
+      ) || null;
 
-    const givenNames = this.maybeGetEntityMentionTextAndConfidence(
-      processDocumentResult.document.entities.find(
-        entity => entity.type === 'Given Names'
-      )
-    );
+    const givenNames =
+      this.maybeGetEntityMentionTextAndConfidence(
+        processDocumentResult.document.entities.find(
+          entity => entity.type === 'Given Names'
+        )
+      ) || null;
 
-    const issueDate = this.maybeGetEntityMentionTextAndConfidence(
-      processDocumentResult.document.entities.find(
-        entity => entity.type === 'Issue Date'
-      )
-    );
+    const issueDate =
+      this.maybeGetEntityMentionTextAndConfidence(
+        processDocumentResult.document.entities.find(
+          entity => entity.type === 'Issue Date'
+        )
+      ) || null;
 
-    const mrzCode = this.maybeGetEntityMentionTextAndConfidence(
-      processDocumentResult.document.entities.find(
-        entity => entity.type === 'MRZ Code'
-      )
-    );
+    const mrzCode =
+      this.maybeGetEntityMentionTextAndConfidence(
+        processDocumentResult.document.entities.find(
+          entity => entity.type === 'MRZ Code'
+        )
+      ) || null;
 
     const portraitEntity = processDocumentResult.document.entities.find(
       entity => entity.type === 'Portrait'
@@ -293,6 +309,7 @@ class USIDsService {
       givenNames,
       issueDate,
       mrzCode,
+      portrait: null,
     };
 
     if (portraitEntity) {
@@ -389,73 +406,91 @@ class USIDsService {
       );
     }
 
-    const evidenceInconclusiveSuspiciousWord =
-      this.maybeGetEntityMentionTextAndConfidence(
-        processDocumentResult.document.entities.find(
-          entity => entity.type === 'evidence_inconclusive_suspicious_word'
-        )
-      );
-
-    console.log(evidenceInconclusiveSuspiciousWord);
-
-    const evidenceHostname = this.maybeGetEntityMentionTextAndConfidence(
-      processDocumentResult.document.entities.find(
-        entity => entity.type === 'evidence_hostname'
-      )
-    );
-
-    const evidenceSuspiciousWord = this.maybeGetEntityMentionTextAndConfidence(
-      processDocumentResult.document.entities.find(
-        entity => entity.type === 'evidence_suspicious_word'
-      )
-    );
-
-    const evidenceThumbnailUrl = this.maybeGetEntityMentionTextAndConfidence(
-      processDocumentResult.document.entities.find(
-        entity => entity.type === 'evidence_thumbnail_url'
-      )
-    );
-
     const fraudSignalsIsIdentityDocument =
-      this.maybeGetEntityMentionTextAndConfidence(
+      this.maybeGetEntityMentionText(
         processDocumentResult.document.entities.find(
           entity => entity.type === 'fraud_signals_is_identity_document'
         )
-      );
+      ) || null;
+
+    const fraudSignalsSuspiciousWords =
+      this.maybeGetEntityMentionText(
+        processDocumentResult.document.entities.find(
+          entity => entity.type === 'fraud_signals_suspicious_words'
+        )
+      ) || null;
+
+    const evidenceInconclusiveSuspiciousWord =
+      processDocumentResult.document.entities
+        .filter(
+          entity => entity.type === 'evidence_inconclusive_suspicious_word'
+        )
+        .map(this.getEntityMentionText);
+
+    const evidenceSuspiciousWord = processDocumentResult.document.entities
+      .filter(entity => entity.type === 'evidence_suspicious_word')
+      .map(this.getEntityMentionText);
 
     const fraudSignalsImageManipulation =
       this.maybeGetEntityMentionTextAndConfidence(
         processDocumentResult.document.entities.find(
           entity => entity.type === 'fraud_signals_image_manipulation'
         )
-      );
-
-    const fraudSignalsSuspiciousWords =
-      this.maybeGetEntityMentionTextAndConfidence(
-        processDocumentResult.document.entities.find(
-          entity => entity.type === 'fraud_signals_suspicious_words'
-        )
-      );
+      ) || null;
 
     const fraudSignalsOnlineDuplicate =
       this.maybeGetEntityMentionTextAndConfidence(
         processDocumentResult.document.entities.find(
           entity => entity.type === 'fraud_signals_online_duplicate'
         )
-      );
+      ) || null;
+
+    const evidenceHostname = processDocumentResult.document.entities
+      .filter(entity => entity.type === 'evidence_hostname')
+      .map(this.getEntityMentionText);
+
+    const evidenceThumbnailUrl = processDocumentResult.document.entities
+      .filter(entity => entity.type === 'evidence_thumbnail_url')
+      .map(this.getEntityMentionText);
 
     const results: USIDProofingResults = {
-      evidenceInconclusiveSuspiciousWord,
-      evidenceHostname,
-      evidenceSuspiciousWord,
-      evidenceThumbnailUrl,
       fraudSignalsIsIdentityDocument,
-      fraudSignalsImageManipulation,
       fraudSignalsSuspiciousWords,
+      evidenceSuspiciousWord,
+      evidenceInconclusiveSuspiciousWord,
+      fraudSignalsImageManipulation,
       fraudSignalsOnlineDuplicate,
+      evidenceHostname,
+      evidenceThumbnailUrl,
     };
 
     return results;
+  }
+
+  private getEntityMentionText(
+    entity: google.cloud.documentai.v1.Document.IEntity
+  ): {value: string} {
+    if (entity.mentionText) {
+      return {
+        value: entity.mentionText,
+      };
+    }
+
+    throw new Error('entity.mentionText must be defined');
+  }
+
+  private maybeGetEntityMentionText(
+    entity: google.cloud.documentai.v1.Document.IEntity | undefined
+  ): {value: string} | undefined {
+    let result;
+
+    if (entity && entity.mentionText) {
+      result = {
+        value: entity.mentionText,
+      };
+    }
+
+    return result;
   }
 
   private maybeGetEntityMentionTextAndConfidence(
