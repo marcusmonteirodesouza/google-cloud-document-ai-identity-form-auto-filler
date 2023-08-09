@@ -36,10 +36,6 @@ resource "google_kms_crypto_key" "doc_ai" {
   name            = "doc-ai-key"
   key_ring        = google_kms_key_ring.doc_ai_keyring.id
   rotation_period = local.kms_crypto_key_rotation_period
-
-  lifecycle {
-    prevent_destroy = true
-  }
 }
 
 resource "google_kms_crypto_key_iam_member" "doc_ai_sa_doc_ai" {
