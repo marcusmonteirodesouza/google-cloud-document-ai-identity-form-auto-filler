@@ -81,49 +81,49 @@ class USIDsService {
     }
 
     const address =
-      this.maybeGetEntityMentionTextAndConfidence(
+      this.maybeGetMentionText(
         processDocumentResult.document.entities.find(
           entity => entity.type === 'Address'
         )
       ) || null;
 
     const dateOfBirth =
-      this.maybeGetEntityMentionTextAndConfidence(
+      this.maybeGetMentionText(
         processDocumentResult.document.entities.find(
           entity => entity.type === 'Date Of Birth'
         )
       ) || null;
 
     const documentId =
-      this.maybeGetEntityMentionTextAndConfidence(
+      this.maybeGetMentionText(
         processDocumentResult.document.entities.find(
           entity => entity.type === 'Document Id'
         )
       ) || null;
 
     const expirationDate =
-      this.maybeGetEntityMentionTextAndConfidence(
+      this.maybeGetMentionText(
         processDocumentResult.document.entities.find(
           entity => entity.type === 'Expiration Date'
         )
       ) || null;
 
     const familyName =
-      this.maybeGetEntityMentionTextAndConfidence(
+      this.maybeGetMentionText(
         processDocumentResult.document.entities.find(
           entity => entity.type === 'Family Name'
         )
       ) || null;
 
     const givenNames =
-      this.maybeGetEntityMentionTextAndConfidence(
+      this.maybeGetMentionText(
         processDocumentResult.document.entities.find(
           entity => entity.type === 'Given Names'
         )
       ) || null;
 
     const issueDate =
-      this.maybeGetEntityMentionTextAndConfidence(
+      this.maybeGetMentionText(
         processDocumentResult.document.entities.find(
           entity => entity.type === 'Issue Date'
         )
@@ -141,7 +141,7 @@ class USIDsService {
       familyName,
       givenNames,
       issueDate,
-      portrait: null,
+      portraitImage: null,
     };
 
     if (portraitEntity) {
@@ -194,12 +194,7 @@ class USIDsService {
         normalizedVertices
       );
 
-      results.portrait = {
-        page,
-        normalizedVertices,
-        image: portraitImage.toString('base64'),
-        confidence: portraitEntity.confidence,
-      };
+      results.portraitImage = portraitImage.toString('base64');
     }
 
     return results;
@@ -241,56 +236,56 @@ class USIDsService {
     }
 
     const address =
-      this.maybeGetEntityMentionTextAndConfidence(
+      this.maybeGetMentionText(
         processDocumentResult.document.entities.find(
           entity => entity.type === 'Address'
         )
       ) || null;
 
     const dateOfBirth =
-      this.maybeGetEntityMentionTextAndConfidence(
+      this.maybeGetMentionText(
         processDocumentResult.document.entities.find(
           entity => entity.type === 'Date Of Birth'
         )
       ) || null;
 
     const documentId =
-      this.maybeGetEntityMentionTextAndConfidence(
+      this.maybeGetMentionText(
         processDocumentResult.document.entities.find(
           entity => entity.type === 'Document Id'
         )
       ) || null;
 
     const expirationDate =
-      this.maybeGetEntityMentionTextAndConfidence(
+      this.maybeGetMentionText(
         processDocumentResult.document.entities.find(
           entity => entity.type === 'Expiration Date'
         )
       ) || null;
 
     const familyName =
-      this.maybeGetEntityMentionTextAndConfidence(
+      this.maybeGetMentionText(
         processDocumentResult.document.entities.find(
           entity => entity.type === 'Family Name'
         )
       ) || null;
 
     const givenNames =
-      this.maybeGetEntityMentionTextAndConfidence(
+      this.maybeGetMentionText(
         processDocumentResult.document.entities.find(
           entity => entity.type === 'Given Names'
         )
       ) || null;
 
     const issueDate =
-      this.maybeGetEntityMentionTextAndConfidence(
+      this.maybeGetMentionText(
         processDocumentResult.document.entities.find(
           entity => entity.type === 'Issue Date'
         )
       ) || null;
 
     const mrzCode =
-      this.maybeGetEntityMentionTextAndConfidence(
+      this.maybeGetMentionText(
         processDocumentResult.document.entities.find(
           entity => entity.type === 'MRZ Code'
         )
@@ -309,7 +304,7 @@ class USIDsService {
       givenNames,
       issueDate,
       mrzCode,
-      portrait: null,
+      portraitImage: null,
     };
 
     if (portraitEntity) {
@@ -362,12 +357,7 @@ class USIDsService {
         normalizedVertices
       );
 
-      results.portrait = {
-        page,
-        normalizedVertices,
-        image: portraitImage.toString('base64'),
-        confidence: portraitEntity.confidence,
-      };
+      results.portraitImage = portraitImage.toString('base64');
     }
 
     return results;
@@ -407,14 +397,14 @@ class USIDsService {
     }
 
     const fraudSignalsIsIdentityDocument =
-      this.maybeGetEntityMentionText(
+      this.maybeGetMentionText(
         processDocumentResult.document.entities.find(
           entity => entity.type === 'fraud_signals_is_identity_document'
         )
       ) || null;
 
     const fraudSignalsSuspiciousWords =
-      this.maybeGetEntityMentionText(
+      this.maybeGetMentionText(
         processDocumentResult.document.entities.find(
           entity => entity.type === 'fraud_signals_suspicious_words'
         )
@@ -425,21 +415,21 @@ class USIDsService {
         .filter(
           entity => entity.type === 'evidence_inconclusive_suspicious_word'
         )
-        .map(this.getEntityMentionText);
+        .map(this.getMentionText);
 
     const evidenceSuspiciousWord = processDocumentResult.document.entities
       .filter(entity => entity.type === 'evidence_suspicious_word')
-      .map(this.getEntityMentionText);
+      .map(this.getMentionText);
 
     const fraudSignalsImageManipulation =
-      this.maybeGetEntityMentionTextAndConfidence(
+      this.maybeGetMentionText(
         processDocumentResult.document.entities.find(
           entity => entity.type === 'fraud_signals_image_manipulation'
         )
       ) || null;
 
     const fraudSignalsOnlineDuplicate =
-      this.maybeGetEntityMentionTextAndConfidence(
+      this.maybeGetMentionText(
         processDocumentResult.document.entities.find(
           entity => entity.type === 'fraud_signals_online_duplicate'
         )
@@ -447,11 +437,11 @@ class USIDsService {
 
     const evidenceHostname = processDocumentResult.document.entities
       .filter(entity => entity.type === 'evidence_hostname')
-      .map(this.getEntityMentionText);
+      .map(this.getMentionText);
 
     const evidenceThumbnailUrl = processDocumentResult.document.entities
       .filter(entity => entity.type === 'evidence_thumbnail_url')
-      .map(this.getEntityMentionText);
+      .map(this.getMentionText);
 
     const results: USIDProofingResults = {
       fraudSignalsIsIdentityDocument,
@@ -467,45 +457,20 @@ class USIDsService {
     return results;
   }
 
-  private getEntityMentionText(
+  private getMentionText(
     entity: google.cloud.documentai.v1.Document.IEntity
-  ): {value: string} {
+  ): string {
     if (entity.mentionText) {
-      return {
-        value: entity.mentionText,
-      };
+      return entity.mentionText;
     }
 
     throw new Error('entity.mentionText must be defined');
   }
 
-  private maybeGetEntityMentionText(
+  private maybeGetMentionText(
     entity: google.cloud.documentai.v1.Document.IEntity | undefined
-  ): {value: string} | undefined {
-    let result;
-
-    if (entity && entity.mentionText) {
-      result = {
-        value: entity.mentionText,
-      };
-    }
-
-    return result;
-  }
-
-  private maybeGetEntityMentionTextAndConfidence(
-    entity: google.cloud.documentai.v1.Document.IEntity | undefined
-  ): {value: string; confidence: number} | undefined {
-    let result;
-
-    if (entity && entity.mentionText && entity.confidence) {
-      result = {
-        value: entity.mentionText,
-        confidence: entity.confidence,
-      };
-    }
-
-    return result;
+  ): string | null | undefined {
+    return entity?.mentionText;
   }
 
   private async cropImage(
