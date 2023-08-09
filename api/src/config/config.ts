@@ -8,6 +8,8 @@ const envVarsSchema = Joi.object()
     DOCUMENT_AI_US_ID_PROOFING_PROCESSOR_ID: Joi.string().required(),
     DOCUMENT_AI_US_PASSPORT_PROCESSOR_LOCATION: Joi.string().required(),
     DOCUMENT_AI_US_PASSPORT_PROCESSOR_ID: Joi.string().required(),
+    DOCUMENT_AI_US_PATENT_PROCESSOR_LOCATION: Joi.string().required(),
+    DOCUMENT_AI_US_PATENT_PROCESSOR_ID: Joi.string().required(),
     GOOGLE_PROJECT_ID: Joi.string().required(),
     LOG_LEVEL: Joi.string().valid('debug', 'info').default('info'),
     PORT: Joi.number().integer().required(),
@@ -25,8 +27,8 @@ if (error) {
 const config = {
   documentAi: {
     processors: {
-      ids: {
-        us: {
+      us: {
+        ids: {
           driverLicense: {
             location: envVars.DOCUMENT_AI_US_DRIVER_LICENSE_PROCESSOR_LOCATION,
             id: envVars.DOCUMENT_AI_US_DRIVER_LICENSE_PROCESSOR_ID,
@@ -39,6 +41,10 @@ const config = {
             location: envVars.DOCUMENT_AI_US_PASSPORT_PROCESSOR_LOCATION,
             id: envVars.DOCUMENT_AI_US_PASSPORT_PROCESSOR_ID,
           },
+        },
+        patent: {
+          location: envVars.DOCUMENT_AI_US_PATENT_PROCESSOR_LOCATION,
+          id: envVars.DOCUMENT_AI_US_PATENT_PROCESSOR_ID,
         },
       },
     },

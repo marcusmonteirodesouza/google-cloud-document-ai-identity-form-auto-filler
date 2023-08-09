@@ -8,7 +8,7 @@ import {HealthCheckRouter} from './health-check';
 import {errorHandler} from './error-handler/v1';
 import {
   DocumentsRouter as DocumentsRouterV1,
-  USIDsService as USIDsServiceV1,
+  USDocumentsService as USDocumentsServiceV1,
 } from './documents/v1';
 import {DocumentProcessorServiceClient} from '@google-cloud/documentai';
 import {config} from './config';
@@ -19,28 +19,32 @@ const documentProcessorServiceClient = new DocumentProcessorServiceClient({
 
 const healthCheckRouter = new HealthCheckRouter().router;
 
-const usIdsServiceV1 = new USIDsServiceV1({
+const usDocumentsServiceV1 = new USDocumentsServiceV1({
   documentAi: {
     documentProcessorServiceClient,
     processors: {
       driverLicense: {
-        location: config.documentAi.processors.ids.us.driverLicense.location,
-        id: config.documentAi.processors.ids.us.driverLicense.id,
+        location: config.documentAi.processors.us.ids.driverLicense.location,
+        id: config.documentAi.processors.us.ids.driverLicense.id,
       },
       idProofing: {
-        location: config.documentAi.processors.ids.us.idProofing.location,
-        id: config.documentAi.processors.ids.us.idProofing.id,
+        location: config.documentAi.processors.us.ids.idProofing.location,
+        id: config.documentAi.processors.us.ids.idProofing.id,
       },
       passport: {
-        location: config.documentAi.processors.ids.us.passport.location,
-        id: config.documentAi.processors.ids.us.passport.id,
+        location: config.documentAi.processors.us.ids.passport.location,
+        id: config.documentAi.processors.us.ids.passport.id,
+      },
+      patent: {
+        location: config.documentAi.processors.us.patent.location,
+        id: config.documentAi.processors.us.patent.id,
       },
     },
   },
 });
 
 const documentsRouterV1 = new DocumentsRouterV1({
-  usIdsService: usIdsServiceV1,
+  usDocumentsService: usDocumentsServiceV1,
 }).router;
 
 const app = express();

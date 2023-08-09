@@ -1,2 +1,2 @@
-export {USIDsService} from './services';
+export {USDocumentsService} from './services';
 export {DocumentsRouter} from './routers';

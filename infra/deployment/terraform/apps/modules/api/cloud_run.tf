@@ -23,6 +23,14 @@ resource "google_cloud_run_v2_service" "api" {
         value = google_document_ai_processor.us_driver_license_parser.name
       }
       env {
+        name  = "DOCUMENT_AI_US_PASSPORT_PROCESSOR_LOCATION"
+        value = google_document_ai_processor.us_passport_parser.location
+      }
+      env {
+        name  = "DOCUMENT_AI_US_PASSPORT_PROCESSOR_ID"
+        value = google_document_ai_processor.us_passport_parser.name
+      }
+      env {
         name  = "DOCUMENT_AI_US_ID_PROOFING_PROCESSOR_LOCATION"
         value = google_document_ai_processor.us_id_proofing.location
       }
@@ -31,12 +39,12 @@ resource "google_cloud_run_v2_service" "api" {
         value = google_document_ai_processor.us_id_proofing.name
       }
       env {
-        name  = "DOCUMENT_AI_US_PASSPORT_PROCESSOR_LOCATION"
-        value = google_document_ai_processor.us_passport_parser.location
+        name  = "DOCUMENT_AI_US_PATENT_PROCESSOR_LOCATION"
+        value = google_document_ai_processor.us_patent_parser.location
       }
       env {
-        name  = "DOCUMENT_AI_US_PASSPORT_PROCESSOR_ID"
-        value = google_document_ai_processor.us_passport_parser.name
+        name  = "DOCUMENT_AI_US_PATENT_PROCESSOR_ID"
+        value = google_document_ai_processor.us_patent_parser.name
       }
       env {
         name  = "GOOGLE_PROJECT_ID"

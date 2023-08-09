@@ -5,9 +5,10 @@ import {
   USDriverLicenseParsingResults,
   USIDProofingResults,
   USPassportParsingResults,
-} from '../../../models';
+  USPatentParsingResults,
+} from '../../models';
 
-interface USIDsServiceSettings {
+interface USDocumentsServiceSettings {
   documentAi: {
     documentProcessorServiceClient: DocumentProcessorServiceClient;
     processors: {
@@ -20,6 +21,10 @@ interface USIDsServiceSettings {
         id: string;
       };
       passport: {
+        location: string;
+        id: string;
+      };
+      patent: {
         location: string;
         id: string;
       };
@@ -37,13 +42,18 @@ interface ParseUSPassportOptions {
   mimeType: string;
 }
 
-interface idProofOptions {
+interface ParseUSPatentOptions {
   imageData: Buffer;
   mimeType: string;
 }
 
-class USIDsService {
-  constructor(private readonly settings: USIDsServiceSettings) {}
+interface IdProofOptions {
+  imageData: Buffer;
+  mimeType: string;
+}
+
+class USDocumentsService {
+  constructor(private readonly settings: USDocumentsServiceSettings) {}
 
   async parseUSDriverLicense(
     options: ParseUSDriverLicenseOptions
@@ -363,7 +373,128 @@ class USIDsService {
     return results;
   }
 
-  async idProof(options: idProofOptions): Promise<USIDProofingResults> {
+  async parseUSPatent(
+    options: ParseUSPatentOptions
+  ): Promise<USPatentParsingResults> {
+    const {documentProcessorServiceClient} = this.settings.documentAi;
+
+    const {location, id: processorId} =
+      this.settings.documentAi.processors.patent;
+
+    const projectId = await documentProcessorServiceClient.getProjectId();
+
+    const name = `projects/${projectId}/locations/${location}/processors/${processorId}`;
+
+    const encodedImage = options.imageData.toString('base64');
+
+    const [processDocumentResult] =
+      await this.settings.documentAi.documentProcessorServiceClient.processDocument(
+        {
+          name,
+          rawDocument: {
+            content: encodedImage,
+            mimeType: options.mimeType,
+          },
+        }
+      );
+
+    if (!processDocumentResult.document) {
+      throw new Error('processDocumentResult.document must be defined');
+    }
+
+    if (!processDocumentResult.document.entities) {
+      throw new Error(
+        'processDocumentResult.document.entities must be defined'
+      );
+    }
+
+    const applicantLine1 =
+      this.maybeGetMentionText(
+        processDocumentResult.document.entities.find(
+          entity => entity.type === 'applicant_line_1'
+        )
+      ) || null;
+
+    const applicationNumber =
+      this.maybeGetMentionText(
+        processDocumentResult.document.entities.find(
+          entity => entity.type === 'application_number'
+        )
+      ) || null;
+
+    const classInternational =
+      this.maybeGetMentionText(
+        processDocumentResult.document.entities.find(
+          entity => entity.type === 'class_international'
+        )
+      ) || null;
+
+    const classUS =
+      this.maybeGetMentionText(
+        processDocumentResult.document.entities.find(
+          entity => entity.type === 'class_us'
+        )
+      ) || null;
+
+    const filingDate =
+      this.maybeGetMentionText(
+        processDocumentResult.document.entities.find(
+          entity => entity.type === 'filing_date'
+        )
+      ) || null;
+
+    const inventorLine1 =
+      this.maybeGetMentionText(
+        processDocumentResult.document.entities.find(
+          entity => entity.type === 'inventor_line_1'
+        )
+      ) || null;
+
+    const issuer =
+      this.maybeGetMentionText(
+        processDocumentResult.document.entities.find(
+          entity => entity.type === 'issuer'
+        )
+      ) || null;
+
+    const patentNumber =
+      this.maybeGetMentionText(
+        processDocumentResult.document.entities.find(
+          entity => entity.type === 'patent_number'
+        )
+      ) || null;
+
+    const publicationDate =
+      this.maybeGetMentionText(
+        processDocumentResult.document.entities.find(
+          entity => entity.type === 'publication_date'
+        )
+      ) || null;
+
+    const titleLine1 =
+      this.maybeGetMentionText(
+        processDocumentResult.document.entities.find(
+          entity => entity.type === 'title_line_1'
+        )
+      ) || null;
+
+    const results: USPatentParsingResults = {
+      applicantLine1,
+      applicationNumber,
+      classInternational,
+      classUS,
+      filingDate,
+      inventorLine1,
+      issuer,
+      patentNumber,
+      publicationDate,
+      titleLine1,
+    };
+
+    return results;
+  }
+
+  async idProof(options: IdProofOptions): Promise<USIDProofingResults> {
     const {documentProcessorServiceClient} = this.settings.documentAi;
 
     const {location, id: processorId} =
@@ -530,4 +661,4 @@ class USIDsService {
   }
 }
 
-export {USIDsService};
+export {USDocumentsService};
