@@ -77,7 +77,7 @@ app.use(fileUpload());
 
 app.use('/', healthCheckRouter);
 
-app.use('/documents/v1', documentsRouterV1);
+app.use('/v1/documents', documentsRouterV1);
 
 app.use(
   async (
