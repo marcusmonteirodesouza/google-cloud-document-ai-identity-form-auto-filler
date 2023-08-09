@@ -14,6 +14,10 @@ data "google_storage_project_service_account" "gcs_sa" {
 resource "google_kms_key_ring" "keyring" {
   name     = "api-${var.region}-key-ring"
   location = var.region
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 resource "google_kms_crypto_key" "api" {
@@ -35,12 +39,20 @@ resource "google_kms_crypto_key_iam_member" "cloud_run_service_agent_api" {
 resource "google_kms_key_ring" "doc_ai_keyring_single_region" {
   name     = "doc-ai-${local.single_region}-keyring"
   location = local.single_region
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 resource "google_kms_crypto_key" "doc_ai_single_region" {
   name            = "doc-ai-key"
   key_ring        = google_kms_key_ring.doc_ai_keyring_single_region.id
   rotation_period = local.kms_crypto_key_rotation_period
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 resource "google_kms_crypto_key_iam_member" "doc_ai_sa_doc_ai_single_region" {
