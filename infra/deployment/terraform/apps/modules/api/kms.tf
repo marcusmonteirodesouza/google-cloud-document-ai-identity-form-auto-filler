@@ -28,8 +28,8 @@ resource "google_kms_crypto_key_iam_member" "cloud_run_service_agent_api" {
 }
 
 resource "google_kms_key_ring" "doc_ai_keyring" {
-  name     = "doc-ai-${var.doc_ai_region}-key-ring"
-  location = var.doc_ai_region == "us" ? "us-central1" : "europe-west4" # See https://cloud.google.com/document-ai/docs/cmek#using_cmek
+  name     = "doc-ai-${var.doc_ai_region}-keyring"
+  location = var.doc_ai_region
 }
 
 resource "google_kms_crypto_key" "doc_ai" {
