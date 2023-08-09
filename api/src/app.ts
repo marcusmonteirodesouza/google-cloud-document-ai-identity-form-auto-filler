@@ -23,9 +23,13 @@ const usDocumentsServiceV1 = new USDocumentsServiceV1({
   documentAi: {
     documentProcessorServiceClient,
     processors: {
-      usDriverLicense: {
+      driverLicense: {
         location: config.documentAi.processors.usDriverLicense.location,
         id: config.documentAi.processors.usDriverLicense.id,
+      },
+      passport: {
+        location: config.documentAi.processors.usPassport.location,
+        id: config.documentAi.processors.usPassport.id,
       },
     },
   },
@@ -73,7 +77,7 @@ app.use(fileUpload());
 
 app.use('/', healthCheckRouter);
 
-app.use('/v1/documents', documentsRouterV1);
+app.use('/documents/v1', documentsRouterV1);
 
 app.use(
   async (

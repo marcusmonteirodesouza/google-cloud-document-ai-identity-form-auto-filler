@@ -23,6 +23,14 @@ resource "google_cloud_run_v2_service" "api" {
         value = google_document_ai_processor.us_driver_license_parser.name
       }
       env {
+        name  = "DOCUMENT_AI_US_PASSPORT_PROCESSOR_LOCATION"
+        value = google_document_ai_processor.us_passport_parser.location
+      }
+      env {
+        name  = "DOCUMENT_AI_US_PASSPORT_PROCESSOR_ID"
+        value = google_document_ai_processor.us_passport_parser.name
+      }
+      env {
         name  = "GOOGLE_PROJECT_ID"
         value = data.google_project.project.project_id
       }

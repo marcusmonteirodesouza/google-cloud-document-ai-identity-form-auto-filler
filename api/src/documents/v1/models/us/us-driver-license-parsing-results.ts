@@ -1,6 +1,6 @@
 import {google} from '@google-cloud/documentai/build/protos/protos';
 
-interface USDriverLicenseParsingResult {
+interface USDriverLicenseParsingResults {
   address?: {
     value: string;
     confidence: number;
@@ -37,4 +37,4 @@ interface USDriverLicenseParsingResult {
   };
 }
 
-export {USDriverLicenseParsingResult};
+export {USDriverLicenseParsingResults};

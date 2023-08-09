@@ -1,13 +1,20 @@
 import {DocumentProcessorServiceClient} from '@google-cloud/documentai';
 import {google} from '@google-cloud/documentai/build/protos/protos';
 import Jimp from 'jimp';
-import {USDriverLicenseParsingResult} from '../../models';
+import {
+  USDriverLicenseParsingResults,
+  USPassportParsingResults,
+} from '../../models';
 
 interface USDocumentsServiceSettings {
   documentAi: {
     documentProcessorServiceClient: DocumentProcessorServiceClient;
     processors: {
-      usDriverLicense: {
+      driverLicense: {
+        location: string;
+        id: string;
+      };
+      passport: {
         location: string;
         id: string;
       };
@@ -20,16 +27,21 @@ interface ParseUSDriverLicenseOptions {
   mimeType: string;
 }
 
+interface ParseUSPassportOptions {
+  imageData: Buffer;
+  mimeType: string;
+}
+
 class USDocumentsService {
   constructor(private readonly settings: USDocumentsServiceSettings) {}
 
   async parseUSDriverLicense(
     options: ParseUSDriverLicenseOptions
-  ): Promise<USDriverLicenseParsingResult> {
+  ): Promise<USDriverLicenseParsingResults> {
     const {documentProcessorServiceClient} = this.settings.documentAi;
 
     const {location, id: processorId} =
-      this.settings.documentAi.processors.usDriverLicense;
+      this.settings.documentAi.processors.driverLicense;
 
     const projectId = await documentProcessorServiceClient.getProjectId();
 
@@ -104,7 +116,7 @@ class USDocumentsService {
       entity => entity.type === 'Portrait'
     );
 
-    const result: USDriverLicenseParsingResult = {
+    const results: USDriverLicenseParsingResults = {
       address,
       dateOfBirth,
       documentId,
@@ -164,7 +176,7 @@ class USDocumentsService {
         normalizedVertices
       );
 
-      result.portrait = {
+      results.portrait = {
         page,
         normalizedVertices,
         image: portraitImage.toString('base64'),
@@ -172,7 +184,166 @@ class USDocumentsService {
       };
     }
 
-    return result;
+    return results;
+  }
+
+  async parseUSPassport(
+    options: ParseUSPassportOptions
+  ): Promise<USPassportParsingResults> {
+    const {documentProcessorServiceClient} = this.settings.documentAi;
+
+    const {location, id: processorId} =
+      this.settings.documentAi.processors.passport;
+
+    const projectId = await documentProcessorServiceClient.getProjectId();
+
+    const name = `projects/${projectId}/locations/${location}/processors/${processorId}`;
+
+    const encodedImage = options.imageData.toString('base64');
+
+    const [processDocumentResult] =
+      await this.settings.documentAi.documentProcessorServiceClient.processDocument(
+        {
+          name,
+          rawDocument: {
+            content: encodedImage,
+            mimeType: options.mimeType,
+          },
+        }
+      );
+
+    if (!processDocumentResult.document) {
+      throw new Error('processDocumentResult.document must be defined');
+    }
+
+    if (!processDocumentResult.document.entities) {
+      throw new Error(
+        'processDocumentResult.document.entities must be defined'
+      );
+    }
+
+    const address = this.maybeGetEntityMentionTextAndConfidence(
+      processDocumentResult.document.entities.find(
+        entity => entity.type === 'Address'
+      )
+    );
+
+    const dateOfBirth = this.maybeGetEntityMentionTextAndConfidence(
+      processDocumentResult.document.entities.find(
+        entity => entity.type === 'Date Of Birth'
+      )
+    );
+
+    const documentId = this.maybeGetEntityMentionTextAndConfidence(
+      processDocumentResult.document.entities.find(
+        entity => entity.type === 'Document Id'
+      )
+    );
+
+    const expirationDate = this.maybeGetEntityMentionTextAndConfidence(
+      processDocumentResult.document.entities.find(
+        entity => entity.type === 'Expiration Date'
+      )
+    );
+
+    const familyName = this.maybeGetEntityMentionTextAndConfidence(
+      processDocumentResult.document.entities.find(
+        entity => entity.type === 'Family Name'
+      )
+    );
+
+    const givenNames = this.maybeGetEntityMentionTextAndConfidence(
+      processDocumentResult.document.entities.find(
+        entity => entity.type === 'Given Names'
+      )
+    );
+
+    const issueDate = this.maybeGetEntityMentionTextAndConfidence(
+      processDocumentResult.document.entities.find(
+        entity => entity.type === 'Issue Date'
+      )
+    );
+
+    const mrzCode = this.maybeGetEntityMentionTextAndConfidence(
+      processDocumentResult.document.entities.find(
+        entity => entity.type === 'MRZ Code'
+      )
+    );
+
+    const portraitEntity = processDocumentResult.document.entities.find(
+      entity => entity.type === 'Portrait'
+    );
+
+    const results: USPassportParsingResults = {
+      address,
+      dateOfBirth,
+      documentId,
+      expirationDate,
+      familyName,
+      givenNames,
+      issueDate,
+      mrzCode,
+    };
+
+    if (portraitEntity) {
+      if (!portraitEntity.confidence) {
+        throw new Error('portraitEntity.confidence must be defined');
+      }
+
+      if (!portraitEntity.pageAnchor) {
+        throw new Error('portrait.pageAnchor must be defined');
+      }
+
+      if (!portraitEntity.pageAnchor.pageRefs) {
+        throw new Error('portrait.pageAnchor.pageRefs must be defined');
+      }
+
+      if (portraitEntity.pageAnchor.pageRefs.length === 0) {
+        throw new Error(
+          'portrait.pageAnchor.pageRefs.length must be greater than 0'
+        );
+      }
+
+      const pageRef = portraitEntity.pageAnchor.pageRefs[0];
+
+      if (!pageRef.page) {
+        throw new Error('pageRef.page must be defined');
+      }
+
+      const page = Number.parseInt(pageRef.page.toString());
+      if (Number.isNaN(page)) {
+        throw new Error(
+          `Failed to parse pageRef.page as an integer. Received ${pageRef.page}`
+        );
+      }
+
+      if (!pageRef.boundingPoly) {
+        throw new Error('pageRef.boundingPoly must be defined');
+      }
+
+      if (!pageRef.boundingPoly.normalizedVertices) {
+        throw new Error(
+          'pageRef.boundingPoly.normalizedVertices must be defined'
+        );
+      }
+
+      const normalizedVertices = pageRef.boundingPoly.normalizedVertices;
+
+      const portraitImage = await this.cropImage(
+        options.imageData,
+        options.mimeType,
+        normalizedVertices
+      );
+
+      results.portrait = {
+        page,
+        normalizedVertices,
+        image: portraitImage.toString('base64'),
+        confidence: portraitEntity.confidence,
+      };
+    }
+
+    return results;
   }
 
   private maybeGetEntityMentionTextAndConfidence(
