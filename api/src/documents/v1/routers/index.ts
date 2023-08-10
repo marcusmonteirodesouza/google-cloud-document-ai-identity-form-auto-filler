@@ -1,0 +1,1 @@
+export {DocumentsRouter} from './documents';
