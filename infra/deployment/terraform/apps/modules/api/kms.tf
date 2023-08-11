@@ -1,11 +1,5 @@
 locals {
   kms_crypto_key_rotation_period = "7776000s" # 90 days
-
-  cloud_run_service_agent_email = "service-${data.google_project.project.number}@serverless-robot-prod.iam.gserviceaccount.com"
-
-  doc_ai_sa = "service-${data.google_project.project.number}@gcp-sa-prod-dai-core.iam.gserviceaccount.com"
-
-  single_region = var.doc_ai_region == "us" ? "us-central1" : "europe-west4" # See https://cloud.google.com/document-ai/docs/cmek#using_cmek
 }
 
 data "google_storage_project_service_account" "gcs_sa" {
@@ -37,8 +31,8 @@ resource "google_kms_crypto_key_iam_member" "cloud_run_service_agent_api" {
 }
 
 resource "google_kms_key_ring" "doc_ai_keyring_single_region" {
-  name     = "doc-ai-${local.single_region}-keyring"
-  location = local.single_region
+  name     = "doc-ai-${local.doc_ai_single_region}-keyring"
+  location = local.doc_ai_single_region
 
   lifecycle {
     prevent_destroy = true
