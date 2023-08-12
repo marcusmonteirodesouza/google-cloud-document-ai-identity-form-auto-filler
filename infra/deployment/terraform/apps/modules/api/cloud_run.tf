@@ -1,3 +1,7 @@
+locals {
+  cloud_run_service_agent_email = "service-${data.google_project.project.number}@serverless-robot-prod.iam.gserviceaccount.com"
+}
+
 data "docker_registry_image" "api" {
   name = var.api_image
 }
