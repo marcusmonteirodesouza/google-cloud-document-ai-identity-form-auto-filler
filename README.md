@@ -6,7 +6,7 @@
 
 `/v1/documents/countries/us/ids/driver-licenses/parse`
 
-Input: a US driver license file.
+Input: US driver license file.
 
 Example output:
 
@@ -27,7 +27,7 @@ Example output:
 
 `/v1/documents/countries/us/ids/id-proof`
 
-Input: a US ID document.
+Input: US ID document.
 
 Example output:
 
@@ -50,7 +50,7 @@ Example output:
 
 `/v1/documents/countries/us/ids/passports/parse`
 
-Input: a US passport file.
+Input: US passport file.
 
 Example output:
 
@@ -72,7 +72,7 @@ Example output:
 
 `/v1/documents/countries/us/patents/parse`
 
-Input: a US patent file.
+Input: US patent file.
 
 Example output:
 
