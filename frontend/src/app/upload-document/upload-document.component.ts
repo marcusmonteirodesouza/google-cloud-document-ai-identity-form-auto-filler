@@ -22,7 +22,7 @@ export class UploadDocumentComponent {
   usDriverLicenseImageDataReadingError: string | null = null;
   usDriverLicenseParsingErrorMessage: string | null = null;
   usDriverLicenseIdProofingErrorMessage: string | null = null;
-  usDriverLicenseIdProofingResult: USIDProofing | null = null;
+  usDriverLicenseIdProofing: USIDProofing | null = null;
   usDriverLicenseForm = this.fb.group({
     address: [''],
     dateOfBirth: [''],
@@ -111,7 +111,7 @@ export class UploadDocumentComponent {
 
     this.documentsService.usIdProof(document).subscribe({
       next: (response) => {
-        this.usDriverLicenseIdProofingResult = response;
+        this.usDriverLicenseIdProofing = response;
       },
       error: (error: DocumentsServiceErrorResponse) => {
         this.usDriverLicenseIdProofingErrorMessage = `Error ID proofing US Driver License: ${error.message}`;
@@ -124,7 +124,7 @@ export class UploadDocumentComponent {
     this.usDriverLicenseImageDataReadingError = null;
     this.usDriverLicenseParsingErrorMessage = null;
     this.usDriverLicenseIdProofingErrorMessage = null;
-    this.usDriverLicenseIdProofingResult = null;
+    this.usDriverLicenseIdProofing = null;
     this.usDriverLicenseForm.reset();
     this.usDriverLicensePortraitImageData = null;
     this.usDriverLicensePortraitImageType = null;

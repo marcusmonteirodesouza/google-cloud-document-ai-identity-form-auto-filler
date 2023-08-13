@@ -10,6 +10,39 @@
     src="{{ usDriverLicenseImageData }}"
     alt="US driver's license. File name: {{ usDriverLicenseImageName }}"
   />
+  <div *ngIf="usDriverLicenseIdProofing">
+    <p>ID proofing results</p>
+    <ul>
+      <li>{{ usDriverLicenseIdProofing.fraudSignalsIsIdentityDocument }}</li>
+      <li>{{ usDriverLicenseIdProofing.fraudSignalsSuspiciousWords }}</li>
+      <ul
+        *ngFor="
+          let suspiciousWord of usDriverLicenseIdProofing.evidenceSuspiciousWord
+        "
+      >
+        <li>{{ suspiciousWord }}</li>
+      </ul>
+      <ul
+        *ngFor="
+          let suspiciousWord of usDriverLicenseIdProofing.evidenceInconclusiveSuspiciousWord
+        "
+      >
+        <li>{{ suspiciousWord }}</li>
+      </ul>
+      <li>{{ usDriverLicenseIdProofing.fraudSignalsImageManipulation }}</li>
+      <li>{{ usDriverLicenseIdProofing.fraudSignalsOnlineDuplicate }}</li>
+      <ul
+        *ngFor="
+          let thumbnailUrl of usDriverLicenseIdProofing.evidenceThumbnailUrl
+        "
+      >
+        <li>{{ thumbnailUrl }}</li>
+      </ul>
+      <ul *ngFor="let hostname of usDriverLicenseIdProofing.evidenceHostname">
+        <li>{{ hostname }}</li>
+      </ul>
+    </ul>
+  </div>
   <form [formGroup]="usDriverLicenseForm">
     <div>
       <label for="us-driver-license-document"
