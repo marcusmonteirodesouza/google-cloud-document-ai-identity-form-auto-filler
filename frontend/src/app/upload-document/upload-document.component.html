@@ -1,0 +1,98 @@
+<section>
+  <p *ngIf="usDriverLicenseParsingErrorMessage">
+    {{ usDriverLicenseParsingErrorMessage }}
+  </p>
+  <p *ngIf="usDriverLicenseIdProofingErrorMessage">
+    {{ usDriverLicenseIdProofingErrorMessage }}
+  </p>
+  <img
+    *ngIf="usDriverLicenseImageData"
+    src="{{ usDriverLicenseImageData }}"
+    alt="US driver's license. File name: {{ usDriverLicenseImageName }}"
+  />
+  <form [formGroup]="usDriverLicenseForm">
+    <div>
+      <label for="us-driver-license-document"
+        >Upload or take a picture of a US driver's license</label
+      >
+      <input
+        type="file"
+        id="us-driver-license-document"
+        name="usDriverLicenseDocument"
+        accept="image/*,.pdf"
+        capture="environment"
+        (change)="onUSDriverLicenseChange($event)"
+      />
+    </div>
+    <div>
+      <label for="us-driver-license-address">Address: </label>
+      <input
+        type="text"
+        id="us-driver-license-address"
+        name="address"
+        formControlName="address"
+      />
+    </div>
+    <div>
+      <label for="us-driver-license-date-of-birth">Date of Birth: </label>
+      <input
+        type="date"
+        id="us-driver-license-date-of-birth"
+        name="dateOfBirth"
+        formControlName="dateOfBirth"
+      />
+    </div>
+    <div>
+      <label for="us-driver-license-document-id">Document ID: </label>
+      <input
+        type="text"
+        id="us-driver-license-document-id"
+        name="documentId"
+        formControlName="documentId"
+      />
+    </div>
+    <div>
+      <label for="us-driver-license-expiration-date">Expiration Date: </label>
+      <input
+        type="date"
+        id="us-driver-license-expiration-date"
+        name="expirationDate"
+        formControlName="expirationDate"
+      />
+    </div>
+    <div>
+      <label for="us-driver-license-family-name">Family Name: </label>
+      <input
+        type="text"
+        id="us-driver-license-family-name"
+        name="familyName"
+        formControlName="familyName"
+      />
+    </div>
+    <div>
+      <label for="us-driver-license-given-names">Given Names: </label>
+      <input
+        type="text"
+        id="us-driver-license-given-names"
+        name="givenNames"
+        formControlName="givenNames"
+      />
+    </div>
+    <div>
+      <label for="us-driver-license-issue-date">Issue Date: </label>
+      <input
+        type="date"
+        id="us-driver-license-issue-date"
+        name="issueDate"
+        formControlName="issueDate"
+      />
+    </div>
+  </form>
+  <img
+    *ngIf="usDriverLicensePortraitImageData"
+    src="data:{{ usDriverLicensePortraitImageType }};base64, {{
+      usDriverLicensePortraitImageData
+    }}"
+    alt="US driver's license portrait"
+  />
+</section>

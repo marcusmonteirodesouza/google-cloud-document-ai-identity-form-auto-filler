@@ -10,15 +10,11 @@ enum ErrorResponseCode {
 }
 
 class ErrorResponse {
-  readonly error;
-
-  constructor(code: ErrorResponseCode, message: string, innerError?: unknown) {
-    this.error = {
-      code,
-      message,
-      innerError,
-    };
-  }
+  constructor(
+    readonly code: ErrorResponseCode,
+    readonly message: string,
+    readonly innerError?: unknown
+  ) {}
 }
 
 class ErrorHandler {

@@ -2,5 +2,5 @@ export {
   USDriverLicenseParsingResults,
   USPassportParsingResults,
   USIDProofingResults,
-  USPatentParsingResults,
-} from './us';
+} from './ids';
+export {USPatentParsingResults} from './patents';

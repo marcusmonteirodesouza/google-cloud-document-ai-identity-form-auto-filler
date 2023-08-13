@@ -98,7 +98,7 @@ class USDocumentsService {
       ) || null;
 
     const dateOfBirth =
-      this.maybeGetMentionText(
+      this.maybeGetNormalizedDate(
         processDocumentResult.document.entities.find(
           entity => entity.type === 'Date Of Birth'
         )
@@ -112,7 +112,7 @@ class USDocumentsService {
       ) || null;
 
     const expirationDate =
-      this.maybeGetMentionText(
+      this.maybeGetNormalizedDate(
         processDocumentResult.document.entities.find(
           entity => entity.type === 'Expiration Date'
         )
@@ -133,7 +133,7 @@ class USDocumentsService {
       ) || null;
 
     const issueDate =
-      this.maybeGetMentionText(
+      this.maybeGetNormalizedDate(
         processDocumentResult.document.entities.find(
           entity => entity.type === 'Issue Date'
         )
@@ -204,7 +204,10 @@ class USDocumentsService {
         normalizedVertices
       );
 
-      results.portraitImage = portraitImage.toString('base64');
+      results.portraitImage = {
+        data: portraitImage.toString('base64'),
+        mimeType: options.mimeType,
+      };
     }
 
     return results;
@@ -253,7 +256,7 @@ class USDocumentsService {
       ) || null;
 
     const dateOfBirth =
-      this.maybeGetMentionText(
+      this.maybeGetNormalizedDate(
         processDocumentResult.document.entities.find(
           entity => entity.type === 'Date Of Birth'
         )
@@ -267,7 +270,7 @@ class USDocumentsService {
       ) || null;
 
     const expirationDate =
-      this.maybeGetMentionText(
+      this.maybeGetNormalizedDate(
         processDocumentResult.document.entities.find(
           entity => entity.type === 'Expiration Date'
         )
@@ -288,7 +291,7 @@ class USDocumentsService {
       ) || null;
 
     const issueDate =
-      this.maybeGetMentionText(
+      this.maybeGetNormalizedDate(
         processDocumentResult.document.entities.find(
           entity => entity.type === 'Issue Date'
         )
@@ -367,7 +370,10 @@ class USDocumentsService {
         normalizedVertices
       );
 
-      results.portraitImage = portraitImage.toString('base64');
+      results.portraitImage = {
+        data: portraitImage.toString('base64'),
+        mimeType: options.mimeType,
+      };
     }
 
     return results;
@@ -416,7 +422,7 @@ class USDocumentsService {
       ) || null;
 
     const applicationNumber =
-      this.maybeGetMentionText(
+      this.maybeGetNormalizedText(
         processDocumentResult.document.entities.find(
           entity => entity.type === 'application_number'
         )
@@ -437,7 +443,7 @@ class USDocumentsService {
       ) || null;
 
     const filingDate =
-      this.maybeGetMentionText(
+      this.maybeGetNormalizedDate(
         processDocumentResult.document.entities.find(
           entity => entity.type === 'filing_date'
         )
@@ -458,14 +464,14 @@ class USDocumentsService {
       ) || null;
 
     const patentNumber =
-      this.maybeGetMentionText(
+      this.maybeGetNormalizedText(
         processDocumentResult.document.entities.find(
           entity => entity.type === 'patent_number'
         )
       ) || null;
 
     const publicationDate =
-      this.maybeGetMentionText(
+      this.maybeGetNormalizedDate(
         processDocumentResult.document.entities.find(
           entity => entity.type === 'publication_date'
         )
@@ -528,14 +534,14 @@ class USDocumentsService {
     }
 
     const fraudSignalsIsIdentityDocument =
-      this.maybeGetMentionText(
+      this.maybeGetNormalizedText(
         processDocumentResult.document.entities.find(
           entity => entity.type === 'fraud_signals_is_identity_document'
         )
       ) || null;
 
     const fraudSignalsSuspiciousWords =
-      this.maybeGetMentionText(
+      this.maybeGetNormalizedText(
         processDocumentResult.document.entities.find(
           entity => entity.type === 'fraud_signals_suspicious_words'
         )
@@ -553,14 +559,14 @@ class USDocumentsService {
       .map(this.getMentionText);
 
     const fraudSignalsImageManipulation =
-      this.maybeGetMentionText(
+      this.maybeGetNormalizedText(
         processDocumentResult.document.entities.find(
           entity => entity.type === 'fraud_signals_image_manipulation'
         )
       ) || null;
 
     const fraudSignalsOnlineDuplicate =
-      this.maybeGetMentionText(
+      this.maybeGetNormalizedText(
         processDocumentResult.document.entities.find(
           entity => entity.type === 'fraud_signals_online_duplicate'
         )
@@ -602,6 +608,30 @@ class USDocumentsService {
     entity: google.cloud.documentai.v1.Document.IEntity | undefined
   ): string | null | undefined {
     return entity?.mentionText;
+  }
+
+  private maybeGetNormalizedDate(
+    entity: google.cloud.documentai.v1.Document.IEntity | undefined
+  ): google.type.IDate | null | undefined {
+    return entity?.normalizedValue?.dateValue;
+  }
+
+  private maybeGetNormalizedText(
+    entity: google.cloud.documentai.v1.Document.IEntity | undefined
+  ): string | null | undefined {
+    if (!entity) {
+      return;
+    }
+
+    if (!entity.normalizedValue) {
+      return entity.mentionText;
+    }
+
+    if (!entity.normalizedValue.text) {
+      return entity.mentionText;
+    }
+
+    return entity.normalizedValue.text;
   }
 
   private async cropImage(
